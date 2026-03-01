@@ -6,15 +6,15 @@
 class SlideMeter {
   TFT_eSPI& tft;
   const char * label;
-  uint16_t start_x;
-  uint16_t start_y;
-  uint16_t total_width;
-  uint16_t total_height;
-  uint16_t top_rect_height;
-  uint16_t bottom_rect_height;
-  uint16_t middle_rect_height;
-  float min_reading;
-  float max_reading;
+  const uint16_t start_x;
+  const uint16_t start_y;
+  const uint16_t total_width;
+  const uint16_t total_height;
+  const uint16_t top_rect_height;
+  const uint16_t bottom_rect_height;
+  const uint16_t middle_rect_height;
+  const float min_reading;
+  const float max_reading;
   uint16_t min_reading_y;
   uint16_t max_reading_y;
   uint16_t last_reading_y;
