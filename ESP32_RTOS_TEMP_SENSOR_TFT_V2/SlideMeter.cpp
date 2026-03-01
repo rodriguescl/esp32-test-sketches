@@ -12,12 +12,12 @@ void SlideMeter::drawHeader() {
 void SlideMeter::drawBody() {
 	tft.fillRect(start_x, start_y + top_rect_height, total_width, middle_rect_height, TFT_WHITE);
 	uint16_t tick_gap = middle_rect_height / 12;
-	float step_size = (max_reading - min_reading) / 10;
-	uint16_t ticks_count = 0;
+	uint16_t step_size = (max_reading - min_reading) / 10;
+	uint8_t ticks_count = 0;
 	tft.setTextColor(TFT_BLACK, TFT_WHITE);
 	tft.setTextDatum(MR_DATUM);
-	float current_reading = max_reading;
-	bool show_Float = true;
+	uint16_t current_reading = max_reading;
+	bool show_number = true;
 
 	uint16_t temp_min_reading_y = min_reading_y;
 	uint16_t temp_max_reading_y = max_reading_y;
@@ -37,10 +37,10 @@ void SlideMeter::drawBody() {
 		min_reading_y = std::min(min_reading_y, y);
 		max_reading_y = std::max(max_reading_y, y);
 		tft.drawLine(start_x + total_width - 18, y, start_x + total_width - 5, y, TFT_BLACK);
-		if(show_Float) {
-			tft.drawFloat(current_reading, 0, start_x + total_width - 20, y, ticksFont);
+		if(show_number) {
+			tft.drawNumber(current_reading, start_x + total_width - 20, y, ticksFont);
 		}
-		show_Float = !show_Float;
+		show_number = !show_number;
 		current_reading -= step_size;
 	}
 }
@@ -53,11 +53,19 @@ void SlideMeter::drawOutline() {
 	tft.drawRect(start_x, start_y, total_width, top_rect_height + middle_rect_height + bottom_rect_height, TFT_BLACK);
 }
 
-SlideMeter::SlideMeter(TFT_eSPI& _tft, const char * _label, uint16_t _start_x, uint16_t _start_y, uint16_t _total_width, uint16_t _total_height, float _min_reading, float _max_reading) : 
-tft(_tft), triangle_sprite(TFT_eSprite(&_tft)), reading_sprite(TFT_eSprite(&_tft)), label(_label), start_x(_start_x), start_y(_start_y), total_width(_total_width), total_height(_total_height),	min_reading(_min_reading), max_reading(_max_reading) {
-	top_rect_height = total_height / 8;
-	bottom_rect_height = top_rect_height;
-	middle_rect_height = 6 * top_rect_height;
+SlideMeter::SlideMeter(TFT_eSPI& _tft, const char * _label, uint16_t _start_x, uint16_t _start_y, uint16_t _total_width, uint16_t _total_height, float _min_reading, float _max_reading) :
+tft(_tft),
+triangle_sprite(TFT_eSprite(&_tft)),
+reading_sprite(TFT_eSprite(&_tft)),
+label(_label), start_x(_start_x),
+start_y(_start_y),
+total_width(_total_width),
+total_height(_total_height),
+min_reading(_min_reading),
+max_reading(_max_reading),
+top_rect_height(total_height / 8),
+bottom_rect_height(top_rect_height),
+middle_rect_height(6 * top_rect_height) {
 	min_reading_y = start_y + top_rect_height + middle_rect_height + bottom_rect_height;
 	max_reading_y = 0;
 	last_reading_y = 1000;
